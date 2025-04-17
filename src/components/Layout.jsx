@@ -3,14 +3,16 @@ import Cart from "./Cart";
 import Checkout from "./Checkout";
 import { Outlet } from "react-router-dom";
 import { UserProgressContextProvider } from "../store/UserProgressContext";
+import { useState } from "react";
 
 export default function Layout() {
+  const [searchQuery, setSearchQuery] = useState('');
   return (
     <UserProgressContextProvider>
-      <Header />
+      <Header onSearch={setSearchQuery} />
       <Cart />
       <Checkout />
-      <Outlet /> {/* This will render either Mainpage or CategoryMeals */}
+      <Outlet context={{ searchQuery }}/> {/* This will render either Mainpage or CategoryMeals */}
     </UserProgressContextProvider>
   );
 }

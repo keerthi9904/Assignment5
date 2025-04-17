@@ -18,7 +18,7 @@ const categories = [
   "Desserts"
 ];
 
-export default function Meals() {
+export default function Meals({ searchQuery }) {
   const { data: loadedMeals, isLoading, error } = useHttp(
     "http://localhost:3000/meals",
     requestConfig,
@@ -42,6 +42,11 @@ export default function Meals() {
   if (error) {
     return <Error title="Failed to fetch meals" message={error} />;
   }
+  const filteredMeals = searchQuery
+  ? loadedMeals.filter((meal) =>
+      meal.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  : loadedMeals;
 
   return (
     <div>
@@ -55,9 +60,13 @@ export default function Meals() {
       </div>
 
       <ul id="meals">
-        {loadedMeals.map((meal) => (
-          <MealItem key={meal.id} meal={meal} />
-        ))}
+        {filteredMeals.length > 0 ? (
+          filteredMeals.map((meal) => (
+            <MealItem key={meal.id} meal={meal} />
+          ))
+        ) : (
+          <p style={{ color: 'gray' }}>No meals found matching "{searchQuery}" 😕</p>
+        )}
       </ul>
     </div>
   );

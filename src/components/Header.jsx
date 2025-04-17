@@ -1,13 +1,11 @@
 import { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import {FaSearch, FaShoppingCart} from 'react-icons/fa';
-
-import Button from './UI/Button.jsx';
 import logoImg from '../assets/logo.jpg';
 import CartContext from '../store/CartContext.jsx';
 import UserProgressContext from '../store/UserProgressContext.jsx';
 
-export default function Header() {
+export default function Header({ onSearch }) {
   const navigate = useNavigate();
   const cartCtx = useContext(CartContext);
   const userProgressCtx = useContext(UserProgressContext);
@@ -19,7 +17,6 @@ export default function Header() {
   function handleShowCart() {
     userProgressCtx.showCart();
   }
-
   return (
     <header id="main-header">
       <div id="title">
@@ -29,7 +26,7 @@ export default function Header() {
 
       <nav className='nav-container'>
       <div className='search-bar'>
-        <input type="text" placeholder='  Search item...' />
+        <input type="text" placeholder='  Search item...' onChange={(e) => onSearch(e.target.value)}/>
         <FaSearch className='search-icon' />
       </div>
       <div className="cart-container" onClick={handleShowCart}>
